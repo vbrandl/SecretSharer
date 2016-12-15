@@ -1,13 +1,21 @@
 #!/usr/bin/env python2
+"""Splits a secret in S shares of which T are required to restore the secret
 
+Uses the blockstack secretsharing library to split secrets
+"""
 from secretsharing import PlaintextToHexSecretSharer
 import argparse, sys
 
-version = 0.5
+__author__ = "Valentin Brandl"
+
+__license__ = "GPLv3"
+__version__ = "0.5"
+__maintainer__ = "Valentin Brandl"
+__email__ = "vbrandl <AT> riseup <DOT> net"
+__status__ = "Development"
 
 def restore(args):
     shares = args.IN.read().splitlines()
-    print shares
     secret = PlaintextToHexSecretSharer.recover_secret(shares)
     args.out.write(secret)
 
@@ -36,7 +44,7 @@ p_restore.set_defaults(func=restore)
 
 parser.add_argument('-i', '--in', dest='IN', default=sys.stdin, help='input file (default: stdin)', nargs='?', type=argparse.FileType('r'))
 parser.add_argument('-o', '--out', dest='out', default=sys.stdout, help='output file (default: stdout)', nargs='?', type=argparse.FileType('w'))
-parser.add_argument('-v', '--version', action='version', version="%%(prog)s %s" % version)
+parser.add_argument('-v', '--version', action='version', version="%%(prog)s %s" % __version__)
 
 args = parser.parse_args()
 args.func(args)
